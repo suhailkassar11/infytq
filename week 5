@@ -1,0 +1,191 @@
+# post order 
+class TreeNode:
+   def __init__(self, data, left = None, right = None):
+      self.data = data
+      self.left = left
+      self.right = right
+def insert(temp,data):
+   que = []
+   que.append(temp)
+   while (len(que)):
+      temp = que[0]
+      que.pop(0)
+      if (not temp.left):
+         if data is not None:
+            temp.left = TreeNode(data)
+         else:
+            temp.left = TreeNode(0)
+         break
+      else:
+         que.append(temp.left)
+      if (not temp.right):
+         if data is not None:
+            temp.right = TreeNode(data)
+         else:
+            temp.right = TreeNode(0)
+         break
+      else:
+         que.append(temp.right)
+def make_tree(elements):
+   Tree = TreeNode(elements[0])
+   for element in elements[1:]:
+      insert(Tree, element)
+   return Tree
+class Solution(object):
+   def postorderTraversal(self, root):
+      if not root:
+         return []
+      res = []
+      stack = [[root,0]]
+      while stack:
+         node = stack[-1]
+         stack.pop()
+         if node[1]== 0 :
+            current = node[0]
+            stack.append([current,1])
+            if current.right:
+               stack.append([current.right,0])
+            if current.left:
+               stack.append([current.left,0])
+         else:
+            if node[0].data != 0:
+               res.append(node[0].data)
+      return res
+
+ob = Solution()
+root = make_tree([-10,9,10,None,None,15,7])
+print(ob.postorderTraversal(root))
+
+# preorder
+class Node:
+
+    def __init__(self, data):
+
+        self.left = None
+        self.right = None
+        self.data = data
+# Insert Node
+    def insert(self, data):
+
+        if self.data:
+            if data < self.data:
+                if self.left is None:
+                    self.left = Node(data)
+                else:
+                    self.left.insert(data)
+            elif data > self.data:
+                if self.right is None:
+                    self.right = Node(data)
+                else:
+                    self.right.insert(data)
+        else:
+            self.data = data
+    def PrintTree(self):
+        if self.left:
+            self.left.PrintTree()
+        print( self.data),
+        if self.right:
+            self.right.PrintTree()
+    def PreorderTraversal(self, root):
+        res = []
+        if root:
+            res.append(root.data)
+            res = res + self.PreorderTraversal(root.left)
+            res = res + self.PreorderTraversal(root.right)
+        return res
+root = Node(27)
+root.insert(14)
+root.insert(35)
+root.insert(10)
+root.insert(19)
+root.insert(31)
+root.insert(42)
+print(root.PreorderTraversal(root))
+
+# inorder
+class Node:
+    def __init__(self, data):
+        self.left = None
+        self.right = None
+        self.data = data
+    def insert(self, data):
+        if self.data:
+            if data < self.data:
+                if self.left is None:
+                    self.left = Node(data)
+                else:
+                    self.left.insert(data)
+            elif data > self.data:
+                if self.right is None:
+                    self.right = Node(data)
+                else:
+                    self.right.insert(data)
+        else:
+            self.data = data
+    def PrintTree(self):
+        if self.left:
+            self.left.PrintTree()
+        print( self.data),
+        if self.right:
+            self.right.PrintTree()
+    def inorderTraversal(self, root):
+        res = []
+        if root:
+            res = self.inorderTraversal(root.left)
+            res.append(root.data)
+            res = res + self.inorderTraversal(root.right)
+        return res
+root = Node(27)
+root.insert(14)
+root.insert(35)
+root.insert(10)
+root.insert(19)
+root.insert(31)
+root.insert(42)
+print(root.inorderTraversal(root))
+
+#breadth first search
+graph = {
+  '5' : ['3','7'],
+  '3' : ['2', '4'],
+  '7' : ['8'],
+  '2' : [],
+  '4' : ['8'],
+  '8' : []
+}
+visited = [] 
+queue = []     
+def bfs(visited, graph, node): #function for BFS
+  visited.append(node)
+  queue.append(node)
+  while queue:          
+    m = queue.pop(0) 
+    print (m, end = " ") 
+    for neighbour in graph[m]:
+      if neighbour not in visited:
+        visited.append(neighbour)
+        queue.append(neighbour)
+print("Following is the Breadth-First Search")
+bfs(visited, graph, '5')
+
+# depth first search
+graph = {
+  '5' : ['3','7'],
+  '3' : ['2', '4'],
+  '7' : ['8'],
+  '2' : [],
+  '4' : ['8'],
+  '8' : []
+}
+visited = set()
+def dfs(visited, graph, node):  #function for dfs 
+    if node not in visited:
+        print (node)
+        visited.add(node)
+        for neighbour in graph[node]:
+            dfs(visited, graph, neighbour)
+print("Following is the Depth-First Search")
+dfs(visited, graph, '5')
+
+
+
